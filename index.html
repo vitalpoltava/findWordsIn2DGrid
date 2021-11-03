@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Find word(s) in 2D grid</title>
+</head>
+<body>
+<script>
+  const matrix = [
+      ['X', 'H', 'A', 'T'],
+      ['X', 'E', 'X', 'X'],
+      ['X', 'L', 'X', 'O'],
+      ['X', 'L', 'X', 'W'],
+      ['C', 'O', 'O', 'L'],
+  ];
+  const words = ["COOL", "HAT", "HELLO", "OWL", "WORLD"];
+
+  function makeWordsListOutOfGrid(grid) {
+    const horizontalWords =  grid.reduce((acc, val) => {
+      acc.push(val.join(''))
+      return acc;
+    }, []);
+
+    const verticalWords = [];
+    const verticalWordLen = horizontalWords.length;
+    const verticalWordsCount = horizontalWords[0].length;
+
+    for (let i = 0; i < verticalWordsCount; i++) {
+      let word = '';
+      for (let j = 0; j < verticalWordLen; j++) {
+        word += horizontalWords[j][i];
+      }
+      verticalWords.push(word);
+    }
+
+    return [...horizontalWords, ...verticalWords];
+  }
+
+  function findWord(grid, words) {
+    const list = makeWordsListOutOfGrid(grid).join('-');
+
+    return words.reduce((acc, val) => {
+      acc[val] = list.includes(val);
+      return acc;
+    }, {})
+  }
+
+  const matches = findWord(matrix, words);
+
+  // Show results
+  document.body.innerHTML = JSON.stringify(matches);
+  // {"COOL":true,"HAT":true,"HELLO":true,"OWL":true,"WORLD":false}
+</script>
+</body>
+</html>
